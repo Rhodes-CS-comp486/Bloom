@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bloom{% endblock %} - Your Cycle Companion</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    {% block extra_css %}{% endblock %}
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Header -->
+        {% if user.is_authenticated %}
+        <header class="app-header">
+            <div class="container">
+                <nav class="nav-main">
+                    <div class="nav-brand">
+                        <a href="{% url 'dashboard' %}" class="logo">
+                            <span class="logo-icon">🌸</span>
+                            <span class="logo-text">Bloom</span>
+                        </a>
+                    </div>
+                    
+                    <ul class="nav-links">
+                        <li><a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Today</a></li>
+                        <li><a href="{% url 'calendar' %}" class="nav-link {% if request.resolver_match.url_name == 'calendar' %}active{% endif %}">Calendar</a></li>
+                        <li><a href="{% url 'insights' %}" class="nav-link {% if request.resolver_match.url_name == 'insights' %}active{% endif %}">Insights</a></li>
+                        <li><a href="{% url 'garden' %}" class="nav-link {% if request.resolver_match.url_name == 'garden' %}active{% endif %}">Garden</a></li>
+                    </ul>
+                    
+                    <div class="nav-actions">
+                        <a href="{% url 'settings' %}" class="nav-icon" aria-label="Settings">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 12.5C11.3807 12.5 12.5 11.3807 12.5 10C12.5 8.61929 11.3807 7.5 10 7.5C8.61929 7.5 7.5 8.61929 7.5 10C7.5 11.3807 8.61929 12.5 10 12.5Z" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M16.25 10C16.25 10.625 16.75 11.125 17.375 11.25L18 11.375C18.5 11.5 18.875 11.875 19 12.375L19.125 13C19.25 13.5 19 14 18.625 14.375L18.125 14.875C17.625 15.375 17.625 16.125 18.125 16.625L18.625 17.125C19 17.5 19.25 18 19.125 18.5L19 19.125C18.875 19.625 18.5 20 18 20.125L17.375 20.25C16.75 20.375 16.25 20.875 16.25 21.5" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                        </a>
+                        <a href="{% url 'logout' %}" class="btn btn-ghost btn-sm">Log out</a>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        {% endif %}
+        
+        <!-- Main Content -->
+        <main class="app-main">
+            {% if messages %}
+            <div class="container">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            {% block content %}{% endblock %}
+        </main>
+        
+        <!-- Footer -->
+        {% if user.is_authenticated %}
+        <footer class="app-footer">
+            <div class="container">
+                <p>&copy; 2024 Bloom. Your data, your cycle, your growth.</p>
+            </div>
+        </footer>
+        {% endif %}
+    </div>
+    
+    <!-- Scripts -->
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

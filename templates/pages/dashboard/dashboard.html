@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Today{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container container-narrow">
+    <!-- Greeting Section -->
+    <section class="greeting-section">
+        <h1>Hello, {{ user.first_name|default:user.username }}</h1>
+        <p class="greeting-date">{{ today|date:"l, F j, Y" }}</p>
+        
+        {% if cycle_info %}
+        <div class="cycle-status-card">
+            <div class="cycle-status-header">
+                <span class="badge badge-phase-{{ cycle_info.phase_slug }}">
+                    {{ cycle_info.phase_name }}
+                </span>
+                <span class="cycle-day">Day {{ cycle_info.day_of_cycle }} of your cycle</span>
+            </div>
+            
+            <p class="cycle-insight">
+                {{ cycle_info.phase_description }}
+            </p>
+            
+            {% if cycle_info.days_until_next_period %}
+            <div class="cycle-prediction">
+                <span class="prediction-icon">📅</span>
+                <span>Your next period is expected in {{ cycle_info.days_until_next_period }} days</span>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </section>
+    
+    <!-- Daily Check-in -->
+    <section class="check-in-section">
+        <div class="section-header">
+            <h2>How are you feeling today?</h2>
+            <p class="text-muted">Take a moment to check in with yourself</p>
+        </div>
+        
+        <form method="post" action="{% url 'daily_check_in' %}" class="check-in-form">
+            {% csrf_token %}
+            
+            <!-- Energy Level -->
+            <div class="check-in-group">
+                <label class="check-in-label">
+                    <span class="label-icon">⚡</span>
+                    <span>Energy Level</span>
+                </label>
+                <div class="level-selector">
+                    <input type="radio" name="energy" value="1" id="energy-1">
+                    <label for="energy-1" class="level-option">Low</label>
+                    
+                    <input type="radio" name="energy" value="2" id="energy-2">
+                    <label for="energy-2" class="level-option">Moderate</label>
+                    
+                    <input type="radio" name="energy" value="3" id="energy-3">
+                    <label for="energy-3" class="level-option">High</label>
+                </div>
+            </div>
+            
+            <!-- Mood -->
+            <div class="check-in-group">
+                <label class="check-in-label">
+                    <span class="label-icon">💭</span>
+                    <span>Mood</span>
+                </label>
+                <div class="mood-selector">
+                    <button type="button" class="mood-option" data-mood="calm">
+                        <span class="mood-emoji">😌</span>
+                        <span class="mood-label">Calm</span>
+                    </button>
+                    <button type="button" class="mood-option" data-mood="happy">
+                        <span class="mood-emoji">😊</span>
+                        <span class="mood-label">Happy</span>
+                    </button>
+                    <button type="button" class="mood-option" data-mood="energized">
+                        <span class="mood-emoji">✨</span>
+                        <span class="mood-label">Energized</span>
+                    </button>
+                    <button type="button" class="mood-option" data-mood="tender">
+                        <span class="mood-emoji">🌸</span>
+                        <span class="mood-label">Tender</span>
+                    </button>
+                    <button type="button" class="mood-option" data-mood="irritable">
+                        <span class="mood-emoji">😤</span>
+                        <span class="mood-label">Irritable</span>
+                    </button>
+                    <button type="button" class="mood-option" data-mood="sad">
+                        <span class="mood-emoji">😔</span>
+                        <span class="mood-label">Sad</span>
+                    </button>
+                    <button type="button" class="mood-option" data-mood="anxious">
+                        <span class="mood-emoji">😰</span>
+                        <span class="mood-label">Anxious</span>
+                    </button>
+                    <button type="button" class="mood-option" data-mood="reflective">
+                        <span class="mood-emoji">🤔</span>
+                        <span class="mood-label">Reflective</span>
+                    </button>
+                </div>
+                <input type="hidden" name="mood" id="mood-input">
+            </div>
+            
+            <!-- Symptoms -->
+            <div class="check-in-group">
+                <label class="check-in-label">
+                    <span class="label-icon">🩺</span>
+                    <span>Physical Symptoms</span>
+                    <span class="label-optional">(optional)</span>
+                </label>
+                <div class="symptoms-grid">
+                    <label class="symptom-checkbox">
+                        <input type="checkbox" name="symptoms" value="cramps">
+                        <span>Cramps</span>
+                    </label>
+                    <label class="symptom-checkbox">
+                        <input type="checkbox" name="symptoms" value="headache">
+                        <span>Headache</span>
+                    </label>
+                    <label class="symptom-checkbox">
+                        <input type="checkbox" name="symptoms" value="bloating">
+                        <span>Bloating</span>
+                    </label>
+                    <label class="symptom-checkbox">
+                        <input type="checkbox" name="symptoms" value="breast_tenderness">
+                        <span>Tender breasts</span>
+                    </label>
+                    <label class="symptom-checkbox">
+                        <input type="checkbox" name="symptoms" value="acne">
+                        <span>Acne</span>
+                    </label>
+                    <label class="symptom-checkbox">
+                        <input type="checkbox" name="symptoms" value="fatigue">
+                        <span>Fatigue</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Notes -->
+            <div class="check-in-group">
+                <label class="check-in-label">
+                    <span class="label-icon">📝</span>
+                    <span>Notes & Reflections</span>
+                    <span class="label-optional">(optional)</span>
+                </label>
+                <textarea 
+                    name="notes" 
+                    class="form-textarea" 
+                    placeholder="Anything you'd like to remember about today? Thoughts, observations, wins..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-full">
+                Save check-in
+            </button>
+        </form>
+    </section>
+    
+    <!-- Quick Actions -->
+    <section class="quick-actions-section">
+        <h3>Quick Actions</h3>
+        <div class="quick-actions-grid">
+            <a href="{% url 'log_period' %}" class="quick-action-card">
+                <span class="action-icon">🩸</span>
+                <span class="action-label">Log period</span>
+            </a>
+            <a href="{% url 'calendar' %}" class="quick-action-card">
+                <span class="action-icon">📅</span>
+                <span class="action-label">View calendar</span>
+            </a>
+            <a href="{% url 'insights' %}" class="quick-action-card">
+                <span class="action-icon">📊</span>
+                <span class="action-label">See insights</span>
+            </a>
+            <a href="{% url 'garden' %}" class="quick-action-card">
+                <span class="action-icon">🌱</span>
+                <span class="action-label">My garden</span>
+            </a>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/components/check-in.js' %}"></script>
+{% endblock %}

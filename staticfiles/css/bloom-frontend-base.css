@@ -1,0 +1,387 @@
+/* ========================================
+   BLOOM DESIGN SYSTEM
+   Compassionate, calming, growth-oriented
+   ======================================== */
+
+:root {
+  /* Color Palette - Soft, Natural, Nurturing */
+  --bloom-primary: #E8B4B8;        /* Soft rose - gentle, feminine */
+  --bloom-primary-dark: #D89BA0;   
+  --bloom-primary-light: #F5DFE1;
+  
+  --bloom-secondary: #B8D4C8;      /* Sage green - growth, calm */
+  --bloom-secondary-dark: #9FBFAF;
+  --bloom-secondary-light: #E1EDE7;
+  
+  --bloom-accent: #F4D8A8;         /* Warm honey - energy, warmth */
+  --bloom-accent-dark: #E8C88F;
+  
+  /* Cycle Phase Colors */
+  --phase-menstrual: #E8B4B8;      /* Rose - release, rest */
+  --phase-follicular: #F4D8A8;     /* Honey - rising energy */
+  --phase-ovulation: #FFE5B4;      /* Peach - peak, vitality */
+  --phase-luteal: #D4B8E8;         /* Lavender - reflection, nesting */
+  
+  /* Neutrals */
+  --bloom-background: #FDFCFB;     /* Warm white */
+  --bloom-surface: #FFFFFF;
+  --bloom-surface-soft: #F9F7F5;
+  
+  --bloom-text-primary: #4A4A4A;   /* Warm dark gray */
+  --bloom-text-secondary: #7A7A7A;
+  --bloom-text-muted: #A8A8A8;
+  
+  --bloom-border: #E8E6E3;
+  --bloom-border-light: #F2F0ED;
+  
+  /* Emotional States */
+  --mood-calm: #B8D4C8;
+  --mood-energized: #F4D8A8;
+  --mood-tender: #E8B4B8;
+  --mood-reflective: #D4B8E8;
+  
+  /* Semantic Colors */
+  --success: #9FBFAF;
+  --info: #A8C8E8;
+  --warning: #F4D8A8;
+  --error: #E8A4A4;
+  
+  /* Spacing Scale */
+  --space-xs: 0.25rem;    /* 4px */
+  --space-sm: 0.5rem;     /* 8px */
+  --space-md: 1rem;       /* 16px */
+  --space-lg: 1.5rem;     /* 24px */
+  --space-xl: 2rem;       /* 32px */
+  --space-2xl: 3rem;      /* 48px */
+  --space-3xl: 4rem;      /* 64px */
+  
+  /* Typography */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 1.875rem;   /* 30px */
+  --text-4xl: 2.25rem;    /* 36px */
+  
+  /* Borders & Radius */
+  --radius-sm: 0.375rem;  /* 6px */
+  --radius-md: 0.5rem;    /* 8px */
+  --radius-lg: 0.75rem;   /* 12px */
+  --radius-xl: 1rem;      /* 16px */
+  --radius-full: 9999px;
+  
+  /* Shadows - Soft, gentle */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 250ms ease-in-out;
+  --transition-slow: 400ms ease-in-out;
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-primary);
+  color: var(--bloom-text-primary);
+  background-color: var(--bloom-background);
+  line-height: 1.6;
+  font-size: var(--text-base);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  line-height: 1.3;
+  font-weight: 500;
+  color: var(--bloom-text-primary);
+  margin-bottom: var(--space-md);
+}
+
+h1 { font-size: var(--text-4xl); }
+h2 { font-size: var(--text-3xl); }
+h3 { font-size: var(--text-2xl); }
+h4 { font-size: var(--text-xl); }
+h5 { font-size: var(--text-lg); }
+h6 { font-size: var(--text-base); }
+
+p {
+  margin-bottom: var(--space-md);
+  line-height: 1.7;
+}
+
+a {
+  color: var(--bloom-primary-dark);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--bloom-primary);
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+.container-narrow {
+  max-width: 800px;
+}
+
+.text-center { text-align: center; }
+.text-muted { color: var(--bloom-text-muted); }
+.text-secondary { color: var(--bloom-text-secondary); }
+
+/* Spacing utilities */
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mb-xl { margin-bottom: var(--space-xl); }
+
+.p-sm { padding: var(--space-sm); }
+.p-md { padding: var(--space-md); }
+.p-lg { padding: var(--space-lg); }
+.p-xl { padding: var(--space-xl); }
+
+/* ========================================
+   COMPONENTS
+   ======================================== */
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--bloom-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--bloom-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background-color: var(--bloom-secondary);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: var(--bloom-secondary-dark);
+}
+
+.btn-soft {
+  background-color: var(--bloom-primary-light);
+  color: var(--bloom-primary-dark);
+}
+
+.btn-soft:hover {
+  background-color: var(--bloom-primary);
+  color: white;
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--bloom-text-secondary);
+  border: 1px solid var(--bloom-border);
+}
+
+.btn-ghost:hover {
+  background-color: var(--bloom-surface-soft);
+  border-color: var(--bloom-primary);
+}
+
+/* Cards */
+.card {
+  background-color: var(--bloom-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.card-soft {
+  background-color: var(--bloom-surface-soft);
+  box-shadow: none;
+  border: 1px solid var(--bloom-border-light);
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: var(--space-lg);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--space-sm);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--bloom-text-primary);
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  color: var(--bloom-text-primary);
+  background-color: var(--bloom-surface);
+  border: 1px solid var(--bloom-border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--bloom-primary);
+  box-shadow: 0 0 0 3px var(--bloom-primary-light);
+}
+
+.form-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-help {
+  display: block;
+  margin-top: var(--space-xs);
+  font-size: var(--text-sm);
+  color: var(--bloom-text-muted);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  background-color: var(--bloom-surface-soft);
+  color: var(--bloom-text-secondary);
+}
+
+.badge-phase-menstrual {
+  background-color: var(--phase-menstrual);
+  color: white;
+}
+
+.badge-phase-follicular {
+  background-color: var(--phase-follicular);
+  color: var(--bloom-text-primary);
+}
+
+.badge-phase-ovulation {
+  background-color: var(--phase-ovulation);
+  color: var(--bloom-text-primary);
+}
+
+.badge-phase-luteal {
+  background-color: var(--phase-luteal);
+  color: white;
+}
+
+/* ========================================
+   LAYOUT
+   ======================================== */
+
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background-color: var(--bloom-surface);
+  border-bottom: 1px solid var(--bloom-border-light);
+  padding: var(--space-md) 0;
+}
+
+.app-main {
+  flex: 1;
+  padding: var(--space-xl) 0;
+}
+
+.app-footer {
+  background-color: var(--bloom-surface-soft);
+  padding: var(--space-lg) 0;
+  text-align: center;
+  color: var(--bloom-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+  :root {
+    --text-4xl: 1.875rem;  /* 30px */
+    --text-3xl: 1.5rem;    /* 24px */
+  }
+  
+  .container {
+    padding: 0 var(--space-md);
+  }
+  
+  .app-main {
+    padding: var(--space-lg) 0;
+  }
+}
