@@ -16,54 +16,64 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.http import HttpResponse
+from django.shortcuts import redirect
 
-# Import your login view
-try:
-    from apps.us1_create_login import views as auth_views
-except ImportError:
-    # If the app doesn't exist yet, create a placeholder
-    from django.shortcuts import render
-    class auth_views:
-        @staticmethod
-        def login_view(request):
-            return render(request, 'pages/auth/login.html')
 
-# Placeholder functions for links in templates
+# Redirect root to login
+def root_redirect(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    return redirect('login')
+
+
+# Placeholder views for features not yet implemented
+def dashboard(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    return HttpResponse(f"<h1>Dashboard</h1><p>Welcome {request.user.username}! Coming soon!</p>")
+
+
+def onboarding(request):
+    return HttpResponse("<h1>Onboarding</h1><p>Coming soon!</p>")
+
+
 def password_reset(request):
     return HttpResponse("<h1>Password Reset</h1><p>Coming soon!</p>")
 
-def signup(request):
-    return HttpResponse("<h1>Sign Up</h1><p>Coming soon!</p>")
-
-def dashboard(request):
-    return HttpResponse("<h1>Dashboard</h1><p>Coming soon!</p>")
 
 def calendar_view(request):
     return HttpResponse("<h1>Calendar</h1><p>Coming soon!</p>")
 
+
 def insights(request):
     return HttpResponse("<h1>Insights</h1><p>Coming soon!</p>")
+
 
 def garden(request):
     return HttpResponse("<h1>Garden</h1><p>Coming soon!</p>")
 
+
 def settings_view(request):
     return HttpResponse("<h1>Settings</h1><p>Coming soon!</p>")
 
-def logout_view(request):
-    return HttpResponse("<h1>Logged Out</h1><p>You've been logged out.</p>")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', auth_views.login_view, name='login'),
-    path('password-reset/', password_reset, name='password_reset'),
-    path('signup/', signup, name='signup'),
+
+    # Root URL - redirect to login or dashboard
+    path('', root_redirect, name='root'),
+
+    # Authentication URLs (login, signup, logout)
+    path('', include('apps.us1_create_login.urls')),
+
+    # Other feature URLs (placeholders for now)
     path('dashboard/', dashboard, name='dashboard'),
+    path('onboarding/', onboarding, name='onboarding'),
+    path('password-reset/', password_reset, name='password_reset'),
     path('calendar/', calendar_view, name='calendar'),
     path('insights/', insights, name='insights'),
     path('garden/', garden, name='garden'),
     path('settings/', settings_view, name='settings'),
-    path('logout/', logout_view, name='logout'),
 ]
