@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "core",
     "apps.us1_create_login",
+    "apps.us4_cycle_tracking",
 ]
 
 MIDDLEWARE = [

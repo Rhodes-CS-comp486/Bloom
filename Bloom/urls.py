@@ -68,6 +68,8 @@ urlpatterns = [
     # Authentication URLs (login, signup, logout)
     path('', include('apps.us1_create_login.urls')),
 
+    path('', include('apps.us4_cycle_tracking.urls')),
+
     # Other feature URLs (placeholders for now)
     path('dashboard/', dashboard, name='dashboard'),
     path('onboarding/', onboarding, name='onboarding'),
