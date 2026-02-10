@@ -1,79 +1,80 @@
-"""
-URL configuration for Bloom project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/6.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-
 from django.contrib import admin
 from django.urls import path, include
-from django.http import HttpResponse
 from django.shortcuts import redirect
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+
+from core.views import calendar_view
 
 
-# Redirect root to login
 def root_redirect(request):
     if request.user.is_authenticated:
-        return redirect('dashboard')
-    return redirect('login')
+        return redirect("dashboard")
+    return redirect("login")
 
 
-# Placeholder views for features not yet implemented
+@login_required
 def dashboard(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    return HttpResponse(f"<h1>Dashboard</h1><p>Welcome {request.user.username}! Coming soon!</p>")
+    return redirect("calendar")
 
 
-def onboarding(request):
-    return HttpResponse("<h1>Onboarding</h1><p>Coming soon!</p>")
+def logout_view(request):
+    logout(request)
+    return redirect("login")
 
 
+# Placeholder for login page link
 def password_reset(request):
-    return HttpResponse("<h1>Password Reset</h1><p>Coming soon!</p>")
+    return redirect("login")
 
 
-def calendar_view(request):
-    return HttpResponse("<h1>Calendar</h1><p>Coming soon!</p>")
+# Placeholders REQUIRED by templates so they don't crash
+@login_required
+def daily_check_in(request):
+    return redirect("calendar")
 
 
+@login_required
+def log_period(request):
+    return redirect("calendar")
+
+
+@login_required
 def insights(request):
-    return HttpResponse("<h1>Insights</h1><p>Coming soon!</p>")
+    return redirect("calendar")
 
 
+@login_required
 def garden(request):
-    return HttpResponse("<h1>Garden</h1><p>Coming soon!</p>")
+    return redirect("calendar")
 
 
+@login_required
 def settings_view(request):
-    return HttpResponse("<h1>Settings</h1><p>Coming soon!</p>")
+    return redirect("calendar")
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
 
-    # Root URL - redirect to login or dashboard
-    path('', root_redirect, name='root'),
+    path("", root_redirect, name="root"),
 
-    # Authentication URLs (login, signup, logout)
-    path('', include('apps.us1_create_login.urls')),
+    # Auth (US1)
+    path("", include("apps.us1_create_login.urls")),
+    path("logout/", logout_view, name="logout"),
+    path("password-reset/", password_reset, name="password_reset"),
 
-    # Other feature URLs (placeholders for now)
-    path('dashboard/', dashboard, name='dashboard'),
-    path('onboarding/', onboarding, name='onboarding'),
-    path('password-reset/', password_reset, name='password_reset'),
-    path('calendar/', calendar_view, name='calendar'),
-    path('insights/', insights, name='insights'),
-    path('garden/', garden, name='garden'),
-    path('settings/', settings_view, name='settings'),
+    # Main pages
+    path("dashboard/", dashboard, name="dashboard"),
+    path("calendar/", calendar_view, name="calendar"),
+
+    # Placeholder endpoints referenced by templates
+    path("check-in/", daily_check_in, name="daily_check_in"),
+    path("log-period/", log_period, name="log_period"),
+    path("insights/", insights, name="insights"),
+    path("garden/", garden, name="garden"),
+    path("settings/", settings_view, name="settings"),
 ]
+
+
+
