@@ -64,6 +64,7 @@ urlpatterns = [
     path("logout/", logout_view, name="logout"),
     path("password-reset/", password_reset, name="password_reset"),
 
+    path("", include("apps.us3_start_tracking.urls")),
     # Main pages
     path("dashboard/", dashboard, name="dashboard"),
     path("calendar/", calendar_view, name="calendar"),

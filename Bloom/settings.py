@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "apps.us1_create_login",
     "apps.us2_password_reset",
 
+    "apps.us3_start_tracking",
 ]
 
 MIDDLEWARE = [
