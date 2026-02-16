@@ -1,57 +1,69 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
+from .forms import BloomSignupForm, BloomLoginForm
+from .models import UserProfile
+
+
+# ==========================
+# LOGIN
+# ==========================
 def login_view(request):
-    """Handle user login"""
+    # If already logged in, route based on onboarding status
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        profile, _ = UserProfile.objects.get_or_create(user=request.user)
+        if not profile.has_completed_onboarding:
+            return redirect("onboarding")  # <-- handled by US3 app
+        return redirect("calendar")
 
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+    if request.method == "POST":
+        form = BloomLoginForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            user = form.get_user()
+            login(request, user)
 
-            if user is not None:
-                login(request, user)
-                messages.success(request, f'Welcome back! 🌸')
-                next_page = request.GET.get('next', 'dashboard')
-                return redirect(next_page)
-        else:
-            messages.error(request, 'Invalid username or password. Please try again.')
+            profile, _ = UserProfile.objects.get_or_create(user=user)
+            if not profile.has_completed_onboarding:
+                return redirect("onboarding")  # <-- handled by US3 app
+
+            return redirect("calendar")
     else:
-        form = AuthenticationForm()
+        form = BloomLoginForm()
 
-    return render(request, 'pages/auth/login.html', {'form': form})
+    return render(request, "pages/auth/login.html", {"form": form})
 
+
+# ==========================
+# SIGNUP
+# ==========================
 def signup_view(request):
-    """Handle user registration"""
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        return redirect("calendar")
 
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+    if request.method == "POST":
+        form = BloomSignupForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, 'Welcome to Bloom! 🌸')
-            return redirect('onboarding')
-        else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f'{error}')
+
+            # Create profile automatically
+            UserProfile.objects.get_or_create(user=user)
+
+            # New users always go to onboarding first (US3)
+            return redirect("onboarding")
     else:
-        form = UserCreationForm()
+        form = BloomSignupForm()
 
-    return render(request, 'pages/auth/signup.html', {'form': form})
+    return render(request, "pages/auth/signup.html", {"form": form})
 
+
+# ==========================
+# LOGOUT
+# ==========================
 @login_required
 def logout_view(request):
-    """Handle user logout"""
     logout(request)
-    messages.success(request, 'You\'ve been logged out. See you soon! 🌸')
-    return redirect('login')
+    messages.success(request, "You've been logged out. See you soon! 🌸")
+    return redirect("login")
