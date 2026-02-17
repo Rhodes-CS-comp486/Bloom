@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Log Period Start Date (US4)</h2>
+
+<form method="POST">
+  {% csrf_token %}
+  <label for="start_date">Period Start Date</label>
+  <input type="date" name="start_date" required>
+
+  <button type="submit">Save</button>
+</form>
+{% endblock %}
+

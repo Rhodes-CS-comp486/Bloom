@@ -55,6 +55,25 @@ def settings_view(request):
 
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
+
+    # Root URL - redirect to login or dashboard
+    path('', root_redirect, name='root'),
+
+    # Authentication URLs (login, signup, logout)
+    path('', include('apps.us1_create_login.urls')),
+
+    path('', include('apps.us4_cycle_tracking.urls')),
+
+    # Other feature URLs (placeholders for now)
+    path('dashboard/', dashboard, name='dashboard'),
+    path('onboarding/', onboarding, name='onboarding'),
+    path('password-reset/', password_reset, name='password_reset'),
+    path('calendar/', calendar_view, name='calendar'),
+    path('insights/', insights, name='insights'),
+    path('garden/', garden, name='garden'),
+    path('settings/', settings_view, name='settings'),
+]
     path("admin/", admin.site.urls),
 
     path("", root_redirect, name="root"),

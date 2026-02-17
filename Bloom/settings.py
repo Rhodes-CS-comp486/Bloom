@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "core",
     "apps.us1_create_login",
+    "apps.us4_cycle_tracking",
     "apps.us2_password_reset",
 
     "apps.us3_start_tracking",
