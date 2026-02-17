@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Calendar{% endblock %}
+
+{% block content %}
+<div class="container container-narrow">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin: 16px 0;">
+    <a href="?year={{ prev_year }}&month={{ prev_month }}">← Prev</a>
+    <h2 style="margin:0;">{{ month_name }} {{ year }}</h2>
+    <a href="?year={{ next_year }}&month={{ next_month }}">Next →</a>
+  </div>
+
+  <div style="display:grid; grid-template-columns: repeat(7, 1fr); gap: 8px; font-weight:600; text-align:center;">
+    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+  </div>
+
+  <div style="display:grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 8px;">
+    {% for week in weeks %}
+      {% for day in week %}
+        <div style="
+          border:1px solid #e6e6e6;
+          border-radius:14px;
+          padding:10px;
+          min-height:90px;
+          {% if day == today %} border:2px solid #222; {% endif %}
+          {% if day.month != month %} opacity:0.35; {% endif %}
+        ">
+          <div style="font-weight:600;">{{ day.day }}</div>
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
