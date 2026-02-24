@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     "apps.us3_start_tracking",
     "apps.us13_checkin_prompt",
+    "apps.us16_habit_tracking",
 ]
 
 MIDDLEWARE = [

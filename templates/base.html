@@ -54,6 +54,13 @@
                            Garden
                         </a>
                     </li>
+
+                    <li>
+                        <a href="{% url 'habits_today' %}"
+                           class="nav-link {% if request.resolver_match.url_name == 'habits_today' %}active{% endif %}">
+                           Habits
+                        </a>
+                    </li>
                 </ul>
 
                 <!-- Actions -->
