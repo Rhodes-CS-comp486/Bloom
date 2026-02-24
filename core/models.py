@@ -7,6 +7,12 @@ class Cycle(models.Model):
     start_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        profile = self.user.userprofile
+        profile.last_period_start = self.strat_date
+        profile.save()
 
     def __str__(self):
         return f"{self.user.username} - {self.start_date}"

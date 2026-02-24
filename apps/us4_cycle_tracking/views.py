@@ -12,7 +12,12 @@ def log_period(request):
                 user=request.user,
                 start_date=start_date
             )
-            return redirect("log_period")
+
+            profile = request.user.userprofile
+            profile.last_period_start = cycle.start_date
+            profile.save()
+
+            return redirect("calendar")
 
     return render(request, "pages/cycle/log_cycle.html")
 
