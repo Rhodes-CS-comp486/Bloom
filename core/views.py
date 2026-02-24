@@ -1,12 +1,9 @@
 from datetime import date
 import calendar
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-
-from django.shortcuts import render
 from core.models import Cycle
-from datetime import date
+
 
 @login_required
 def dashboard(request):
@@ -56,6 +53,20 @@ def calendar_view(request):
     # build month grid (weeks)
     cal = calendar.Calendar(firstweekday=6)  # Sunday start
     weeks = cal.monthdatescalendar(year, month)
+    
+    user_cycles = Cycle.objects.filter(user = request.user
+
+    period_days = set()
+    for cycle in user_cycles:
+        strt = cycle.start_date
+        end = cycle.end_date if cycle end_date else start + timedelta(days = 4)
+        #assumes 5 day period
+
+        while current <= end:
+            if current.month == month and current.year == year:
+                period_days.add(current)
+            current += timedelta(days=1)
+    
 
     # safe prev/next month
     prev_year, prev_month = (year, month - 1) if month > 1 else (year - 1, 12)
@@ -67,6 +78,7 @@ def calendar_view(request):
         "month": month,
         "month_name": calendar.month_name[month],
         "weeks": weeks,
+        "period_days": period-days,
         "prev_year": prev_year,
         "prev_month": prev_month,
         "next_year": next_year,
