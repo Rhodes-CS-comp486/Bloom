@@ -13,13 +13,25 @@ def dashboard(request):
     try:
         current_cycle = Cycle.objects.filter(user=request.user).latest("start_date")
         today = date.today()
+        
+        # if period ended
+        if current_cycle.end_date:
+            period_length = current_cycle.calculate_length()
+            day_of_cycle = period_length
+
+        else:
+            day_of_cycle = (today - current_cycle.start_date).days + 1
+            period_length = day_of_cycle
+
         day_of_cycle = (today - current_cycle.start_date).days + 1
+
 
         cycle_info = {
             "phase_name": "Menstrual",           # example, you can calculate phases later
             "phase_slug": "menstrual",
             "phase_description": "Your period has started.",
             "day_of_cycle": day_of_cycle,
+            "period_length": period_length,
             "days_until_next_period": 28 - day_of_cycle,
         }
     except Cycle.DoesNotExist:
