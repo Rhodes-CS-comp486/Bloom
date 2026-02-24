@@ -39,7 +39,7 @@ def signup_view(request):
             user = form.save()
             login(request, user)
             messages.success(request, 'Welcome to Bloom! 🌸')
-            return redirect('onboarding')
+            return redirect('login')
         else:
             for field, errors in form.errors.items():
                 for error in errors:

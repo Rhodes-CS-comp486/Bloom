@@ -19,7 +19,7 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 </head>
-<body>
+<body class="{% if request.resolver_match.url_name == 'calendar' %}calendar-page{% endif %}">
     <div class="app-layout">
         <!-- Header -->
         {% if user.is_authenticated %}
@@ -82,5 +82,5 @@
     <!-- Scripts -->
     <script src="{% static 'js/main.js' %}"></script>
     {% block extra_js %}{% endblock %}
-</body>
+<body class="{% if request.resolver_match.url_name == 'calendar' %}calendar-page{% endif %}">
 </html>
