@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Manage Habits{% endblock %}
+
+{% block content %}
+<div class="container container-narrow">
+
+  <!-- 🌿 Header -->
+  <div class="page-header" style="margin-bottom: 18px;">
+    <h1 style="margin-bottom: 6px;">Choose your gentle practices</h1>
+    <p class="text-muted" style="margin-bottom: 12px;">
+      Pick what feels supportive right now. You can change this anytime.
+    </p>
+
+    <div style="display:flex; gap:10px;">
+      <a class="btn btn-ghost btn-sm" href="{% url 'habits_today' %}">← Back to today</a>
+      <a class="btn btn-ghost btn-sm" href="{% url 'calendar' %}">Calendar</a>
+    </div>
+  </div>
+
+
+  <!-- 🌼 Bloom Habit Library -->
+  <div class="card" style="margin-bottom: 20px;">
+    <h3 style="margin-top:0;">Bloom’s Habit Library</h3>
+
+    {% if total_templates == 0 %}
+      <p class="text-muted">
+        Your habit library is empty right now.
+      </p>
+      <p class="text-muted">
+        Run: <code>python3 manage.py migrate us16_habit_tracking</code>
+      </p>
+
+    {% elif templates_by_category %}
+      <form method="post">
+        {% csrf_token %}
+
+        {% for category, items in templates_by_category.items %}
+          <div style="margin-top: 18px;">
+            <div style="font-weight:600; margin-bottom:8px; font-size: 15px;">
+              {% if category == "Body" %}🌿{% elif category == "Mind" %}🌙{% elif category == "Home" %}🕯️{% elif category == "Connection" %}💛{% elif category == "Rest" %}🫧{% else %}🌸{% endif %}
+              {{ category }}
+            </div>
+
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;">
+              {% for t in items %}
+                <label style="
+                  border: 1px solid var(--bloom-border-light);
+                  border-radius: var(--radius-lg);
+                  padding: 14px;
+                  background: var(--bloom-surface);
+                  cursor: pointer;
+                  transition: all 0.15s ease;
+                ">
+                  <div style="display:flex; gap:10px; align-items:flex-start;">
+                    <input type="checkbox"
+                           name="template_ids"
+                           value="{{ t.id }}"
+                           style="margin-top:4px;">
+                    <div>
+                      <div style="font-weight:600;">{{ t.name }}</div>
+                      {% if t.intention %}
+                        <div class="text-muted" style="margin-top:4px;">
+                          {{ t.intention }}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </label>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+
+        <div style="display:flex; justify-content:flex-end; margin-top: 18px;">
+          <button class="btn btn-soft" type="submit">Add selected</button>
+        </div>
+      </form>
+
+    {% else %}
+      <p class="text-muted">
+        You’ve added all {{ total_templates }} habits from the library. 🌿
+      </p>
+      <p class="text-muted">
+        You can pause or remove habits below.
+      </p>
+    {% endif %}
+  </div>
+
+
+  <!-- 🌸 Create Custom Habit -->
+  <div class="card" style="margin-bottom: 20px;">
+    <h3 style="margin-top:0;">Create your own</h3>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        {{ form.name }}
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Intention (optional)</label>
+        {{ form.intention }}
+      </div>
+
+      <div class="form-group">
+        <label class="checkbox-label">
+          {{ form.is_active }}
+          <span>Active</span>
+        </label>
+      </div>
+
+      <button class="btn btn-primary" type="submit">Save habit</button>
+    </form>
+  </div>
+
+
+  <!-- 🌷 Your Habits -->
+  <div class="card">
+    <h3 style="margin-top:0;">Your habits</h3>
+
+    {% if habits %}
+      <ul style="list-style:none; padding:0; margin:0;">
+        {% for h in habits %}
+          <li style="
+            padding: 14px 0;
+            border-bottom: 1px solid var(--bloom-border-light);
+            display:flex;
+            justify-content:space-between;
+            gap:12px;
+          ">
+            <div>
+              <div style="font-weight:600;">{{ h.name }}</div>
+              {% if h.intention %}
+                <div class="text-muted" style="margin-top:4px;">
+                  {{ h.intention }}
+                </div>
+              {% endif %}
+              <div class="text-muted" style="margin-top:4px;">
+                {% if h.is_active %}Active{% else %}Paused{% endif %}
+                {% if h.template %} · From Bloom library{% endif %}
+              </div>
+            </div>
+
+            <div style="display:flex; gap:8px; align-items:center;">
+
+              <a class="btn btn-ghost btn-sm"
+                 href="{% url 'habit_edit' h.id %}">
+                 Edit
+              </a>
+
+              {% if h.is_active %}
+                <form method="post"
+                      action="{% url 'habit_pause' h.id %}"
+                      style="margin:0;">
+                  {% csrf_token %}
+                  <button class="btn btn-soft btn-sm"
+                          type="submit">
+                    Pause
+                  </button>
+                </form>
+              {% endif %}
+
+              <form method="post"
+                    action="{% url 'habit_remove' h.id %}"
+                    style="margin:0;">
+                {% csrf_token %}
+                <button class="btn btn-ghost btn-sm"
+                        type="submit"
+                        onclick="return confirm('Remove this habit? You can re-add it later.')">
+                  Remove
+                </button>
+              </form>
+
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">
+        You haven’t added any habits yet.
+      </p>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

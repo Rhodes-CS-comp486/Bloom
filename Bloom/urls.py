@@ -72,6 +72,8 @@ urlpatterns = [
     # Check-in feature (US13)
     path('checkin/', include('apps.us13_checkin_prompt.urls', namespace='checkin')),
 
+    path("", include("apps.us16_habit_tracking.urls")),
+
     # Main pages
     path('dashboard/', dashboard, name='dashboard'),
     #path('onboarding/', onboarding, name='onboarding'),
