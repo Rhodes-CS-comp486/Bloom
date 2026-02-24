@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from .forms import BloomSignupForm
 
 def login_view(request):
     """Handle user login"""
@@ -29,25 +30,25 @@ def login_view(request):
     return render(request, 'pages/auth/login.html', {'form': form})
 
 def signup_view(request):
-    """Handle user registration"""
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        return redirect("calendar")
 
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+    if request.method == "POST":
+        form = BloomSignupForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, 'Welcome to Bloom! 🌸')
-            return redirect('login')
-        else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f'{error}')
-    else:
-        form = UserCreationForm()
 
-    return render(request, 'pages/auth/signup.html', {'form': form})
+            # Create profile automatically
+            UserProfile.objects.get_or_create(user=user)
+
+            # New users always go to onboarding first (US3)
+            return redirect("onboarding")
+    else:
+        form = BloomSignupForm()
+
+    return render(request, "pages/auth/signup.html", {"form": form})
+
 
 @login_required
 def logout_view(request):

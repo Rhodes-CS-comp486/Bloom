@@ -21,6 +21,7 @@ class BloomLoginForm(AuthenticationForm):
 
 class BloomSignupForm(UserCreationForm):
     """Custom signup form with Bloom styling"""
+
     email = forms.EmailField(
         required=True,
         widget=forms.EmailInput(attrs={
@@ -29,6 +30,7 @@ class BloomSignupForm(UserCreationForm):
             'id': 'id_email'
         })
     )
+
     username = forms.CharField(
         widget=forms.TextInput(attrs={
             'class': 'form-input',
@@ -36,6 +38,7 @@ class BloomSignupForm(UserCreationForm):
             'id': 'id_username'
         })
     )
+
     password1 = forms.CharField(
         label='Password',
         widget=forms.PasswordInput(attrs={
@@ -44,6 +47,7 @@ class BloomSignupForm(UserCreationForm):
             'id': 'id_password1'
         })
     )
+
     password2 = forms.CharField(
         label='Confirm Password',
         widget=forms.PasswordInput(attrs={
@@ -55,11 +59,11 @@ class BloomSignupForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ("username", "email", "password1", "password2")
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.email = self.cleaned_data['email']
+        user.email = self.cleaned_data["email"]
         if commit:
             user.save()
         return user
