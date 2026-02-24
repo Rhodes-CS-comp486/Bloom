@@ -23,7 +23,13 @@
           min-height:90px;
           {% if day == today %} border:2px solid #222; {% endif %}
           {% if day.month != month %} opacity:0.35; {% endif %}
-        ">
+          {% if day in period_days %} background-color:#ff4d6d; color:white;
+          cursor pointer; {% endif%} 
+          "
+          {% if day in period_days %}
+             onclick="alert('Period day: {{ day }}')"
+          {% endif %}
+          >
           <div style="font-weight:600;">{{ day.day }}</div>
         </div>
       {% endfor %}
