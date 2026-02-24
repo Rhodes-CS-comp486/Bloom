@@ -2,6 +2,17 @@
    AUTH PAGES STYLES
    Login, Signup, Password Reset
    ======================================== */
+html, body {
+    height: 100%; /* Ensures the container takes up the full page height */
+    margin: 0;   /* Removes default body margins */
+}
+
+.center-container {
+    display: flex;             /* Activates flexbox layout */
+    justify-content: center;   /* Centers content horizontally */
+    align-items: center;       /* Centers content vertically */
+    height: 100%;              /* Makes the container fill its parent (body) */
+}
 
 .auth-container {
   min-height: 100vh;

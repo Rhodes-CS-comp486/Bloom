@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     "apps.us2_password_reset",
 
     "apps.us3_start_tracking",
+    "apps.us13_checkin_prompt",
+    "apps.us16_habit_tracking",
 ]
 
 MIDDLEWARE = [
@@ -68,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'apps.us13_checkin_prompt.context_processors.daily_checkin',
             ],
         },
     },
