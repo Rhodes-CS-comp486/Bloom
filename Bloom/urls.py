@@ -53,6 +53,9 @@ def garden(request):
 def settings_view(request):
     return redirect("calendar")
 
+@login_required
+def onboarding(request):
+    return redirect("calendar")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -66,8 +69,8 @@ urlpatterns = [
     path('password-reset/', password_reset, name='password_reset'),
 
     # Onboarding & Cycle Tracking
-    path('', include('apps.us3_start_tracking.urls')),
     path('', include('apps.us4_cycle_tracking.urls')),
+    path('', include("apps.us3_start_tracking.urls")),
 
     # Check-in feature (US13)
     path('checkin/', include('apps.us13_checkin_prompt.urls', namespace='checkin')),
@@ -86,3 +89,4 @@ urlpatterns = [
     path('garden/', garden, name='garden'),
     path('settings/', settings_view, name='settings'),
 ]
+

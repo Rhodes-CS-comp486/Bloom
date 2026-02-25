@@ -26,7 +26,12 @@
             <p class="cycle-insight">
                 {{ cycle_info.phase_description }}
             </p>
-            
+
+            <div class="cycle-length">
+                <span class="length-icon">🩸</span>
+                <span>Period length so far: {{ cycle_info.period_length }} days</span>
+            </div>
+
             {% if cycle_info.days_until_next_period %}
             <div class="cycle-prediction">
                 <span class="prediction-icon">📅</span>
