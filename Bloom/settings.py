@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "apps.us2_password_reset",
 
     "apps.us3_start_tracking",
+    "apps.us11_notes",
     "apps.us13_checkin_prompt",
     "apps.us16_habit_tracking",
 ]

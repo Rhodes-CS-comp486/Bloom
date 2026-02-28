@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Edit note{% endblock %}
+
+{% block content %}
+<div class="container container-narrow">
+
+  <div style="display:flex; gap:10px; margin-bottom:14px;">
+    <a class="btn btn-ghost btn-sm" href="{% url 'notes_for_day' day|date:'Y-m-d' %}">
+      ← Back to notes
+    </a>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0;">Edit note ({{ day }})</h2>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label">Title (optional)</label>
+        {{ form.title }}
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Your note</label>
+        {{ form.body }}
+      </div>
+
+      <button class="btn btn-primary" type="submit">Save changes</button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}
